@@ -90,10 +90,7 @@ const UserMenu = ({ onLogout }) => (
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>My Account</DropdownMenuLabel>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>
-        <Settings className="mr-2 h-4 w-4" />
-        Settings
-      </DropdownMenuItem>
+      <DropdownMenuItem>Settings</DropdownMenuItem>
       <DropdownMenuItem>Support</DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuItem onClick={onLogout}>Logout</DropdownMenuItem>

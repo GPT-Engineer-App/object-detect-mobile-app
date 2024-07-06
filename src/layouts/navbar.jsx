@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { CircleUser, Menu, Package2, Settings } from "lucide-react";
+import { CircleUser, Menu, Package2, Settings } from "lucide-react"; // Import Settings icon
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { navItems } from "../App";
 
@@ -44,6 +44,10 @@ const DesktopNav = () => (
       <Package2 className="h-6 w-6" />
       <span className="sr-only">Acme Inc</span>
     </NavItem>
+    <NavItem to="/settings" className="flex items-center gap-2 text-lg font-semibold md:text-base">
+      <Settings className="h-6 w-6" />
+      <span>Settings</span>
+    </NavItem>
     {navItems.map((item) => (
       <NavItem key={item.to} to={item.to}>
         {item.title}
@@ -68,6 +72,10 @@ const MobileNav = () => (
         >
           <Package2 className="h-6 w-6" />
           <span className="sr-only">Acme Inc</span>
+        </NavItem>
+        <NavItem to="/settings" className="flex items-center gap-2 text-lg font-semibold">
+          <Settings className="h-6 w-6" />
+          <span>Settings</span>
         </NavItem>
         {navItems.map((item) => (
           <NavItem key={item.to} to={item.to}>

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { CircleUser, Menu, Package2, Settings } from "lucide-react"; // Import Settings icon
+import { CircleUser, Menu, Package2 } from "lucide-react"; // Removed Settings icon import
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { navItems } from "../App";
 
@@ -99,8 +99,7 @@ const UserDropdown = ({ onLogout }) => (
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>My Account</DropdownMenuLabel>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>Settings</DropdownMenuItem>
-      <DropdownMenuItem>Support</DropdownMenuItem>
+      <DropdownMenuItem>Support</DropdownMenuItem> {/* Removed Settings item */}
       <DropdownMenuSeparator />
       <DropdownMenuItem onClick={onLogout}>Logout</DropdownMenuItem>
     </DropdownMenuContent>

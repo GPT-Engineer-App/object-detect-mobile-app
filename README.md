@@ -1,49 +1,67 @@
-# object-detect-mobile-app
+# Cross-Platform Mobile Object Detection App
 
-Project Title: Cross-Platform Mobile Object Detection App
+## Project Description
 
-Project Description:
+This project is a cross-platform mobile application designed for real-time object detection. The initial phase focuses on setting up the essential components and framework without incorporating advanced features.
 
-Create a skeletal structure for a cross-platform mobile application designed for real-time object detection. This initial phase will focus on setting up the essential components and framework without incorporating advanced features. The core requirements include:
+## Core Requirements
 
-Mobile Framework: Use React Native for cross-platform development (iOS and Android).
-Machine Learning Framework: Integrate TensorFlow Lite for on-device object detection.
-Camera Integration: Enable access to the device's camera and display a live video feed in the app.
-Basic Object Detection: Implement rudimentary object detection capabilities using a placeholder or sample model (not YOLOv5 or EfficientDet yet).
-Bounding Box Display: Draw bounding boxes around detected objects on the camera feed.
-User Interface: Design a minimal UI with a camera view and basic controls (e.g., start/stop detection).
+1. **Mobile Framework**: React Native for cross-platform development (iOS and Android).
+2. **Machine Learning Framework**: TensorFlow Lite for on-device object detection.
+3. **Camera Integration**: Access to the device's camera and display a live video feed in the app.
+4. **Basic Object Detection**: Rudimentary object detection capabilities using a placeholder or sample model.
+5. **Bounding Box Display**: Draw bounding boxes around detected objects on the camera feed.
+6. **User Interface**: Minimal UI with a camera view and basic controls (e.g., start/stop detection).
 
-## Collaborate with GPT Engineer
+## Setup Instructions
 
-This is a [gptengineer.app](https://gptengineer.app)-synced repository 🌟🤖
+### Prerequisites
 
-Changes made via gptengineer.app will be committed to this repo.
+- Node.js
+- React Native CLI
+- Xcode (for iOS development)
+- Android Studio (for Android development)
 
-If you clone this repo and push changes, you will have them reflected in the GPT Engineer UI.
+### Installation
 
-## Tech stack
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-repo/mobile-object-detection-app.git
+   cd mobile-object-detection-app
+   ```
 
-This project is built with .
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
 
-- Vite
-- React
-- shadcn-ui
-- Tailwind CSS
+3. Run the app on iOS:
+   ```sh
+   npx react-native run-ios
+   ```
 
-## Setup
+4. Run the app on Android:
+   ```sh
+   npx react-native run-android
+   ```
 
-```sh
-git clone https://github.com/GPT-Engineer-App/object-detect-mobile-app.git
-cd object-detect-mobile-app
-npm i
-```
+## Project Structure
 
-```sh
-npm run dev
-```
+- `src/components`: Reusable components.
+- `src/screens`: Screen components.
+- `src/utils`: Utility functions.
 
-This will run a dev server with auto reloading and an instant preview.
+## Usage
 
-## Requirements
+- Open the app on your mobile device.
+- Allow camera access when prompted.
+- Use the button to start/stop object detection.
+- Detected objects will be highlighted with bounding boxes.
 
-- Node.js & npm - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.

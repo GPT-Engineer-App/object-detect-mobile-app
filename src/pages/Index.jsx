@@ -6,6 +6,7 @@ import { trackObjects } from "@/utils/objectTracking"; // Import the tracking fu
 import { Camera, Settings, HelpCircle, Save, Play, PauseCircle } from "lucide-react"; // Import Save, Play, and PauseCircle icons
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; // Import RadioGroup components
 import { Label } from "@/components/ui/label"; // Import Label component
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const Index = () => {
   const [cameraActive, setCameraActive] = useState(false);
@@ -14,6 +15,7 @@ const Index = () => {
   const [selectedOption, setSelectedOption] = useState("option1"); // State for radio group
   const [selectedModel, setSelectedModel] = useState("efficientdet"); // State for selected model
   const videoRef = useRef(null);
+  const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
     if (cameraActive) {
@@ -118,6 +120,9 @@ const Index = () => {
         </Button>
         <Button variant="outline" size="icon" onClick={handleSaveResults}>
           <Save className="h-6 w-6" />
+        </Button>
+        <Button variant="outline" size="icon" onClick={() => navigate("/settings")}>
+          <Settings className="h-6 w-6" />
         </Button>
       </div>
       <div className="mb-8">

@@ -9,6 +9,7 @@ import Layout from "./layouts/sidebar"; // available: default, navbar, sidebar
 import Index from "./pages/Index.jsx";
 import ReviewResults from "./pages/ReviewResults.jsx"; // Import ReviewResults page
 import Login from "./pages/Login.jsx";
+import Settings from "./pages/Settings.jsx"; // Import Settings page
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               <Route index element={<Index />} />
               <Route path="review-results" element={<ReviewResults />} />
+              <Route path="/settings" element={<Settings />} /> {/* New route for Settings */}
             </Route>
           </Routes>
         </Router>

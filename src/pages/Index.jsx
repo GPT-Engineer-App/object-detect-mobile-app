@@ -16,12 +16,19 @@ const Index = () => {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    if (cameraActive) {
-      const video = videoRef.current;
-      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+    const activateCamera = async () => {
+      try {
+        const video = videoRef.current;
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;
         video.play();
-      });
+      } catch (error) {
+        console.error("Error activating camera:", error);
+      }
+    };
+
+    if (cameraActive) {
+      activateCamera();
     } else {
       const video = videoRef.current;
       if (video && video.srcObject) {
@@ -34,17 +41,21 @@ const Index = () => {
   }, [cameraActive]);
 
   const handleCapture = async () => {
-    const video = videoRef.current;
-    const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    await loadModel(selectedModel); // Load the selected model
-    const detections = await detectObjects(canvas);
-    setDetections(detections);
-    const tracked = trackObjects(detections); // Track objects across frames
-    setTrackedObjects(tracked);
+    try {
+      const video = videoRef.current;
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      await loadModel(selectedModel); // Load the selected model
+      const detections = await detectObjects(canvas);
+      setDetections(detections);
+      const tracked = trackObjects(detections); // Track objects across frames
+      setTrackedObjects(tracked);
+    } catch (error) {
+      console.error("Error during capture:", error);
+    }
   };
 
   const handleSwitchCamera = () => {

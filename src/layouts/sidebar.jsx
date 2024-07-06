@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { CircleUser, Menu, Package2, Settings } from "lucide-react"; // Import Settings icon
+import { CircleUser, Menu, Package2, Settings } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { navItems } from "../App";
 
@@ -27,7 +27,7 @@ const Layout = () => {
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <MobileSidebar />
-          <div className="w-full flex-1">{/* Add nav bar content here! */}</div>
+          <div className="w-full flex-1"></div>
           <UserDropdown onLogout={handleLogout} />
         </header>
         <main className="flex-grow p-4 overflow-auto">
@@ -48,7 +48,7 @@ const Sidebar = () => (
         </NavLink>
       </div>
       <div className="flex-1">
-        <nav className="grid items-start px-2 text-sm font-medium lg:px-4 gap-2">
+        <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
           {navItems.map((item) => (
             <SidebarNavLink key={item.to} to={item.to}>
               {item.icon}
@@ -70,10 +70,10 @@ const MobileSidebar = () => (
       </Button>
     </SheetTrigger>
     <SheetContent side="left" className="flex flex-col">
-      <nav className="grid gap-2 text-lg font-medium">
+      <nav className="grid gap-2 text-lg font-medium lg:px-4">
         <NavLink
           to="/"
-          className="flex items-center gap-2 text-lg font-semibold mb-4"
+          className="mb-4 flex items-center gap-2 text-lg font-semibold"
         >
           <Package2 className="h-6 w-6" />
           <span>Acme Inc</span>
@@ -116,7 +116,7 @@ const SidebarNavLink = ({ to, children }) => (
     className={({ isActive }) =>
       cn(
         "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary text-muted-foreground",
-        isActive && "text-primary bg-muted",
+        isActive && "bg-muted text-primary",
       )
     }
   >

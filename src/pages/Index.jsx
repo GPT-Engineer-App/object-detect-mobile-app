@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect, useRef } from "react";
 import { detectObjects } from "@/utils/objectDetection";
 import { trackObjects } from "@/utils/objectTracking"; // Import the tracking function
-import { Camera, Settings, HelpCircle, Save, Play, Stop } from "lucide-react"; // Import Save, Play, and Stop icons
+import { Camera, Settings, HelpCircle, Save, Play, PauseCircle } from "lucide-react"; // Import Save, Play, and PauseCircle icons
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; // Import RadioGroup components
 import { Label } from "@/components/ui/label"; // Import Label component
 
@@ -98,7 +98,7 @@ const Index = () => {
       <div className="flex justify-center space-x-4 mb-8">
         {cameraActive ? (
           <Button variant="outline" size="icon" onClick={() => setCameraActive(false)}>
-            <Stop className="h-6 w-6" />
+            <PauseCircle className="h-6 w-6" />
           </Button>
         ) : (
           <Button variant="outline" size="icon" onClick={() => setCameraActive(true)}>

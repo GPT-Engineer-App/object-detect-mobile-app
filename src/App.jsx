@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Home, List } from "lucide-react"; // Import List icon
+import { Home, List, Settings as SettingsIcon } from "lucide-react"; // Import Settings icon
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Layout from "./layouts/sidebar"; // available: default, navbar, sidebar
 import Index from "./pages/Index.jsx";
 import ReviewResults from "./pages/ReviewResults.jsx"; // Import ReviewResults page
 import Login from "./pages/Login.jsx";
+import Settings from "./pages/Settings.jsx"; // Import Settings page
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,11 @@ export const navItems = [
     title: "Review Results", // New navigation item
     to: "/review-results",
     icon: <List className="h-4 w-4" />,
+  },
+  {
+    title: "Settings", // New navigation item
+    to: "/settings",
+    icon: <SettingsIcon className="h-4 w-4" />,
   },
 ];
 
@@ -45,6 +51,7 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               <Route index element={<Index />} />
               <Route path="review-results" element={<ReviewResults />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
           </Routes>
         </Router>

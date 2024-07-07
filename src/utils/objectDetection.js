@@ -17,6 +17,12 @@ export const loadModel = async (modelName = 'efficientdet') => {
       case 'ssd_mobilenet':
         modelUrl = 'https://tfhub.dev/tensorflow/ssd_mobilenet_v2/2';
         break;
+      case 'yolov7':
+        modelUrl = 'https://tfhub.dev/ultralytics/yolov7/1';
+        break;
+      case 'efficientdet_d7':
+        modelUrl = 'https://tfhub.dev/tensorflow/efficientdet/d7/1';
+        break;
       default:
         throw new Error('Model not supported');
     }

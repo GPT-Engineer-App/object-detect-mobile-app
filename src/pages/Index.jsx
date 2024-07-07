@@ -151,6 +151,14 @@ const Index = () => {
             <RadioGroupItem value="ssd_mobilenet" id="ssd_mobilenet" />
             <Label htmlFor="ssd_mobilenet">SSD MobileNet</Label>
           </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="yolov7" id="yolov7" />
+            <Label htmlFor="yolov7">YOLOv7</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="efficientdet_d7" id="efficientdet_d7" />
+            <Label htmlFor="efficientdet_d7">EfficientDet-D7</Label>
+          </div>
         </RadioGroup>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

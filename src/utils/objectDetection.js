@@ -31,22 +31,18 @@ export const detectObjects = async (image) => {
     await loadModel(currentModel);
   }
 
-  const tensor = tf.browser.fromPixels(image).expandDims(0).toFloat().div(255.0);
+  const tensor = tf.browser.fromPixels(image).expandDims(0).toFloat().div(tf.scalar(255));
   const predictions = await models[currentModel].executeAsync(tensor);
 
-  const [boxes, scores, classes] = await Promise.all([
-    predictions[0].array(),
-    predictions[1].array(),
-    predictions[2].array(),
-  ]);
+  const boxes = predictions[0].arraySync();
+  const scores = predictions[1].arraySync();
+  const classes = predictions[2].arraySync();
 
-  return boxes.map((box, i) => {
-    return {
-      box,
-      score: scores[i],
-      class: classes[i],
-    };
-  });
+  return boxes.map((box, i) => ({
+    box,
+    score: scores[i],
+    class: classes[i],
+  }));
 };
 
 export const segmentObjects = async (image) => {

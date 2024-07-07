@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { detectObjects, loadModel } from "@/utils/objectDetection"; // Import loadModel
 import { trackObjects } from "@/utils/objectTracking"; // Import the tracking function
 import { Camera, Settings, HelpCircle, Save, Play, PauseCircle } from "lucide-react"; // Import Save, Play, and PauseCircle icons
@@ -14,6 +14,8 @@ const Index = () => {
   const [selectedOption, setSelectedOption] = useState("option1"); // State for radio group
   const [selectedModel, setSelectedModel] = useState("efficientdet"); // State for selected model
   const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const animationFrameId = useRef(null);
 
   useEffect(() => {
     if (cameraActive) {
@@ -33,19 +35,29 @@ const Index = () => {
     }
   }, [cameraActive]);
 
-  const handleCapture = async () => {
+  const processFrame = useCallback(async () => {
     const video = videoRef.current;
-    const canvas = document.createElement("canvas");
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    const ctx = canvas.getContext("2d");
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     await loadModel(selectedModel); // Load the selected model
     const detections = await detectObjects(canvas);
     setDetections(detections);
     const tracked = trackObjects(detections); // Track objects across frames
     setTrackedObjects(tracked);
-  };
+    animationFrameId.current = requestAnimationFrame(processFrame);
+  }, [selectedModel]);
+
+  useEffect(() => {
+    if (cameraActive) {
+      animationFrameId.current = requestAnimationFrame(processFrame);
+    } else {
+      cancelAnimationFrame(animationFrameId.current);
+    }
+    return () => cancelAnimationFrame(animationFrameId.current);
+  }, [cameraActive, processFrame]);
 
   const handleSwitchCamera = () => {
     // Logic for switching camera
@@ -84,6 +96,7 @@ const Index = () => {
           {cameraActive ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" />
+              <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover" />
               <Button variant="outline" size="icon" onClick={handleCapture}>
                 <Camera className="h-6 w-6" />
               </Button>

@@ -97,8 +97,8 @@ const Index = () => {
             <div className="absolute inset-0 flex items-center justify-center">
               <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" />
               <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover" />
-              <Button variant="outline" size="icon" onClick={handleCapture}>
-                <Camera className="h-6 w-6" />
+              <Button variant="outline" size="icon" onClick={() => setCameraActive(false)}>
+                <PauseCircle className="h-6 w-6" />
               </Button>
             </div>
           ) : (

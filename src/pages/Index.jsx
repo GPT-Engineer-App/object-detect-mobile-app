@@ -14,6 +14,7 @@ const Index = () => {
   const [selectedOption, setSelectedOption] = useState("option1"); // State for radio group
   const [selectedModel, setSelectedModel] = useState("efficientdet"); // State for selected model
   const videoRef = useRef(null);
+  const canvasRef = useRef(null); // Reference for the canvas element
 
   useEffect(() => {
     if (cameraActive) {
@@ -33,19 +34,45 @@ const Index = () => {
     }
   }, [cameraActive]);
 
-  const handleCapture = async () => {
-    const video = videoRef.current;
-    const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    await loadModel(selectedModel); // Load the selected model
-    const detections = await detectObjects(canvas);
-    setDetections(detections);
-    const tracked = trackObjects(detections); // Track objects across frames
-    setTrackedObjects(tracked);
-  };
+  useEffect(() => {
+    let animationFrameId;
+
+    const processVideo = async () => {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      await loadModel(selectedModel); // Load the selected model
+      const detections = await detectObjects(canvas);
+      setDetections(detections);
+      const tracked = trackObjects(detections); // Track objects across frames
+      setTrackedObjects(tracked);
+
+      // Draw detections on canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      detections.forEach(detection => {
+        const [x, y, width, height] = detection.box;
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, width, height);
+      });
+
+      animationFrameId = requestAnimationFrame(processVideo);
+    };
+
+    if (cameraActive) {
+      animationFrameId = requestAnimationFrame(processVideo);
+    } else {
+      cancelAnimationFrame(animationFrameId);
+    }
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [cameraActive, selectedModel]);
 
   const handleSwitchCamera = () => {
     // Logic for switching camera
@@ -84,9 +111,7 @@ const Index = () => {
           {cameraActive ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" />
-              <Button variant="outline" size="icon" onClick={handleCapture}>
-                <Camera className="h-6 w-6" />
-              </Button>
+              <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover" />
             </div>
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">

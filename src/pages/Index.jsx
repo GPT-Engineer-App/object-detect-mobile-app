@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect, useRef } from "react";
-import { detectObjects, loadModel } from "@/utils/objectDetection"; // Import loadModel
+import { detectObjects, loadModel, segmentObjects } from "@/utils/objectDetection"; // Import segmentObjects
 import { trackObjects } from "@/utils/objectTracking"; // Import the tracking function
 import { Camera, Settings, HelpCircle, Save, Play, PauseCircle } from "lucide-react"; // Import Save, Play, and PauseCircle icons
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; // Import RadioGroup components
@@ -10,8 +10,9 @@ import { Label } from "@/components/ui/label"; // Import Label component
 const Index = () => {
   const [cameraActive, setCameraActive] = useState(false);
   const [detections, setDetections] = useState([]);
+  const [segmentation, setSegmentation] = useState(null); // State for segmentation
   const [trackedObjects, setTrackedObjects] = useState([]); // State for tracked objects
-  const [selectedOption, setSelectedOption] = useState("option1"); // State for radio group
+  const [selectedOption, setSelectedOption] = useState("detection"); // State for radio group
   const [selectedModel, setSelectedModel] = useState("efficientdet"); // State for selected model
   const videoRef = useRef(null);
 
@@ -41,10 +42,16 @@ const Index = () => {
     const ctx = canvas.getContext("2d");
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     await loadModel(selectedModel); // Load the selected model
-    const detections = await detectObjects(canvas);
-    setDetections(detections);
-    const tracked = trackObjects(detections); // Track objects across frames
-    setTrackedObjects(tracked);
+
+    if (selectedOption === "detection") {
+      const detections = await detectObjects(canvas);
+      setDetections(detections);
+      const tracked = trackObjects(detections); // Track objects across frames
+      setTrackedObjects(tracked);
+    } else if (selectedOption === "segmentation") {
+      const segmentation = await segmentObjects(canvas);
+      setSegmentation(segmentation);
+    }
   };
 
   const handleSwitchCamera = () => {
@@ -62,6 +69,7 @@ const Index = () => {
   const handleSaveResults = () => {
     const results = {
       detections,
+      segmentation,
       trackedObjects,
       timestamp: new Date().toISOString(),
     };
@@ -123,16 +131,12 @@ const Index = () => {
       <div className="mb-8">
         <RadioGroup value={selectedOption} onValueChange={setSelectedOption}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="option1" id="option1" />
-            <Label htmlFor="option1">Option 1</Label>
+            <RadioGroupItem value="detection" id="detection" />
+            <Label htmlFor="detection">Object Detection</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="option2" id="option2" />
-            <Label htmlFor="option2">Option 2</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="option3" id="option3" />
-            <Label htmlFor="option3">Option 3</Label>
+            <RadioGroupItem value="segmentation" id="segmentation" />
+            <Label htmlFor="segmentation">Object Segmentation</Label>
           </div>
         </RadioGroup>
       </div>

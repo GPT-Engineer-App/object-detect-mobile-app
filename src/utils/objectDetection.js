@@ -1,5 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
 import { loadGraphModel } from '@tensorflow/tfjs-converter';
+import * as cocoSsd from '@tensorflow-models/coco-ssd';
 
 let models = {};
 let currentModel = 'efficientdet';
@@ -41,5 +42,20 @@ export const detectObjects = async (image) => {
     box,
     score: scores[i],
     class: classes[i],
+  }));
+};
+
+export const segmentObjects = async (image) => {
+  if (!models['coco-ssd']) {
+    models['coco-ssd'] = await cocoSsd.load();
+  }
+
+  const predictions = await models['coco-ssd'].detect(image);
+
+  return predictions.map(prediction => ({
+    bbox: prediction.bbox,
+    class: prediction.class,
+    score: prediction.score,
+    segmentation: prediction.segmentation,
   }));
 };

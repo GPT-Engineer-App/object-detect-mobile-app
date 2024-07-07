@@ -17,6 +17,9 @@ export const loadModel = async (modelName = 'efficientdet') => {
       case 'ssd_mobilenet':
         modelUrl = 'https://tfhub.dev/tensorflow/ssd_mobilenet_v2/2';
         break;
+      case 'mask_rcnn':
+        modelUrl = 'https://tfhub.dev/tensorflow/tfjs-model/mask_rcnn/1';
+        break;
       default:
         throw new Error('Model not supported');
     }
@@ -39,6 +42,27 @@ export const detectObjects = async (image) => {
 
   return boxes.map((box, i) => ({
     box,
+    score: scores[i],
+    class: classes[i],
+  }));
+};
+
+export const segmentObjects = async (image) => {
+  if (!models['mask_rcnn']) {
+    await loadModel('mask_rcnn');
+  }
+
+  const tensor = tf.browser.fromPixels(image).expandDims(0).toFloat().div(tf.scalar(255));
+  const predictions = await models['mask_rcnn'].executeAsync(tensor);
+
+  const boxes = predictions[0].arraySync();
+  const masks = predictions[1].arraySync();
+  const scores = predictions[2].arraySync();
+  const classes = predictions[3].arraySync();
+
+  return boxes.map((box, i) => ({
+    box,
+    mask: masks[i],
     score: scores[i],
     class: classes[i],
   }));

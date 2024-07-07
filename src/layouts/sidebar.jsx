@@ -80,8 +80,9 @@ const MobileSidebar = () => (
         </NavLink>
         {navItems.map((item) => (
           <SidebarNavLink key={item.to} to={item.to}>
+            {item.icon}
             {item.title}
-          </NavLink>
+          </SidebarNavLink>
         ))}
       </nav>
     </SheetContent>
